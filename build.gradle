@@ -132,6 +132,8 @@ allprojects {
             vars[project.name]['version'] = project.version
         }
 
+        inputs.properties vars
+        
         from(sourceSets.main.resources.srcDirs) {
             include 'META-INF/mods.toml'
             include 'pack.mcmeta'
@@ -153,7 +155,7 @@ allprojects {
         }
 
         inputs.properties vars
-
+        
         from(sourceSets.test.resources.srcDirs) {
             include 'META-INF/mods.toml'
             include 'pack.mcmeta'
