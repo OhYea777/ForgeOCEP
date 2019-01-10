@@ -1,0 +1,237 @@
+buildscript {
+    repositories {
+        mavenLocal()
+
+        maven {
+            name = 'Forge'
+            url = 'https://files.minecraftforge.net/maven'
+        }
+
+        jcenter()
+        mavenCentral()
+    }
+
+    configurations {
+        classpath.resolutionStrategy {
+            cacheDynamicVersionsFor 10, 'seconds'
+            cacheChangingModulesFor 0, 'seconds'
+        }
+    }
+
+    dependencies {
+        classpath group: 'com.moandjiezana.toml', name: 'toml4j', version: '0.7.2'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+    }
+}
+
+import com.moandjiezana.toml.Toml
+
+ext {
+    config = new Toml().read(project.file('config.toml'))
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'net.minecraftforge.gradle'
+
+    ext {
+        mod = rootProject.config.getTable(project.name)
+    }
+
+    group mod.getString('group')
+
+    repositories {
+        mavenLocal()
+
+        maven {
+            name = 'Forge'
+            url = 'https://files.minecraftforge.net/maven'
+        }
+
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        minecraft group: config.getString('minecraft.forge.group'), name: config.getString('minecraft.forge.name'), version: config.getString('minecraft.forge.version')
+
+        testImplementation gradleTestKit()
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.1.+'
+
+        testCompileOnly group: 'junit', name: 'junit', version: '4.12'
+        testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.1.+'
+        testRuntimeOnly group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.1.+'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    minecraft {
+        mappings channel: config.getString('minecraft.mappings.channel'), version: config.getString('minecraft.mappings.version')
+
+
+    }
+
+    sourceSets {
+        api
+
+        main {
+            compileClasspath += sourceSets.api.output
+            runtimeClasspath += sourceSets.api.output
+
+            resources {
+                srcDirs += 'src/main/extra'
+            }
+        }
+
+        test {
+            compileClasspath += sourceSets.api.output
+            runtimeClasspath += sourceSets.api.output
+        }
+    }
+
+    configurations {
+        apiCompile.extendsFrom compile
+        testCompile.extendsFrom apiCompile
+    }
+
+    processResources {
+        def vars = rootProject.config.toMap()
+
+        allprojects.each {
+            vars[it.name]['version'] = it.version
+        }
+
+        from(sourceSets.main.resources.srcDirs) {
+            include 'META-INF/mods.toml'
+            include 'pack.mcmeta'
+
+            expand vars
+        }
+
+        from(sourceSets.main.resources.srcDirs) {
+            exclude 'META-INF/mods.toml'
+            exclude 'pack.mcmeta'
+        }
+    }
+
+    processTestResources {
+        def vars = rootProject.config.toMap()
+
+        allprojects.each {
+            vars[it.name]['version'] = it.version
+        }
+
+        inputs.properties vars
+
+        from(sourceSets.test.resources.srcDirs) {
+            include 'META-INF/mods.toml'
+            include 'pack.mcmeta'
+
+            expand vars
+        }
+
+        from(sourceSets.test.resources.srcDirs) {
+            exclude 'META-INF/mods.toml'
+            exclude 'pack.mcmeta'
+        }
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs += 'src/main/extra'
+        }
+    }
+}
+
+minecraft {
+    runs {
+        client {
+            ideaModule "${group}.${name}.main"
+            workingDirectory project.file('run').canonicalPath
+
+            source sourceSets.api
+            source sourceSets.main
+        }
+
+        testClient {
+            ideaModule "${group}.${name}.test"
+
+            source sourceSets.test
+
+            parent client
+        }
+
+        server {
+            ideaModule "${group}.${name}.main"
+            workingDirectory project.file('run').canonicalPath
+
+            source sourceSets.api
+            source sourceSets.main
+        }
+
+        testServer {
+            ideaModule "${group}.${name}.test"
+
+            source sourceSets.test
+
+            parent server
+        }
+    }
+}
+
+subprojects {
+    minecraft {
+        runs {
+            client {
+                ideaModule "${group}.${name}.main"
+                workingDirectory project.file('run').canonicalPath
+
+                source sourceSets.api
+                source sourceSets.main
+
+                parent rootProject.minecraft.runs.client
+            }
+
+            testClient {
+                ideaModule "${group}.${name}.test"
+
+                source sourceSets.test
+
+                parent client
+            }
+
+            server {
+                ideaModule "${group}.${name}.main"
+                workingDirectory project.file('run').canonicalPath
+
+                source sourceSets.api
+                source sourceSets.main
+
+                parent rootProject.minecraft.runs.server
+            }
+
+            testServer {
+                ideaModule "${group}.${name}.test"
+
+                source sourceSets.test
+
+                parent server
+            }
+        }
+    }
+}
+
+// Stop execution of subproject run tasks when executing root project run task
+gradle.taskGraph.whenReady { graph ->
+    graph.getAllTasks().each { task ->
+        if (task.path =~ /:.+:run+/) {
+            if (graph.hasTask(':' + task.name)) {
+                task.enabled = false
+            }
+        }
+    }
+}

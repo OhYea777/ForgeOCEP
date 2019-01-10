@@ -1,0 +1,30 @@
+modLoader = '${minecraft.modLoader.loader}'
+loaderVersion = '${minecraft.modLoader.range}'
+
+[[mods]]
+    modId = '${ExampleMod1.id}'
+    version = '${ExampleMod1.version}'
+
+    displayName = '${ExampleMod1.meta.displayName}'
+    description = '${ExampleMod1.meta.description}'
+
+[[dependencies.${ExampleMod1.id}]]
+    modId = '${ExampleModLib.id}'
+    mandatory = true
+    versionRange = '[${ExampleModLib.version}]'
+    ordering = 'NONE'
+    side = 'BOTH'
+
+[[dependencies.${ExampleMod1.id}]]
+    modId = 'forge'
+    mandatory = true
+    versionRange = '${minecraft.forge.range}'
+    ordering = 'NONE'
+    side = 'BOTH'
+
+[[dependencies.${ExampleMod1.id}]]
+    modId = 'minecraft'
+    mandatory = true
+    versionRange = '${minecraft.range}'
+    ordering = 'NONE'
+    side = 'BOTH'

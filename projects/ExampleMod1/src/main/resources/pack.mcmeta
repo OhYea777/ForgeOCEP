@@ -1,0 +1,6 @@
+{
+    "pack" : {
+        "description" : "${ExampleMod1.meta.name}'s resources",
+        "pack_format" : 4
+    }
+}
