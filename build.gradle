@@ -26,8 +26,35 @@ buildscript {
 
 import com.moandjiezana.toml.Toml
 
+plugins {
+    id 'org.ajoberstar.grgit' version '2.3.0'
+}
+
 ext {
     config = new Toml().read(project.file('config.toml'))
+}
+
+def gitVersion() {
+    if (!grgit) {
+        return 'GITBORK'.toString()
+    }
+
+    def raw
+
+    try {
+        raw = grgit.describe(longDescr: true)
+    } catch (Exception e) {
+        return 'NO-TAG'.toString()
+    }
+
+    def desc = (raw == null ? 'MAJOR.MINOR-PATCH-HASH' : raw).split('-') as List
+
+    desc.removeAt(desc.size() - 1)
+
+    def offset = desc.removeAt(desc.size() - 1)
+    def tag = desc.join('-')
+
+    return "${tag}.${offset}".toString()
 }
 
 allprojects {
@@ -39,6 +66,7 @@ allprojects {
     }
 
     group mod.getString('group')
+    version "${rootProject.config.getString('minecraft.version')}-${gitVersion()}"
 
     repositories {
         mavenLocal()
@@ -69,8 +97,6 @@ allprojects {
 
     minecraft {
         mappings channel: config.getString('minecraft.mappings.channel'), version: config.getString('minecraft.mappings.version')
-
-
     }
 
     sourceSets {
@@ -95,12 +121,15 @@ allprojects {
         apiCompile.extendsFrom compile
         testCompile.extendsFrom apiCompile
     }
+}
 
+// Process all resources _AFTER_ processing original projects so versions are set
+allprojects {
     processResources {
         def vars = rootProject.config.toMap()
 
-        allprojects.each {
-            vars[it.name]['version'] = it.version
+        allprojects.each { project ->
+            vars[project.name]['version'] = project.version
         }
 
         from(sourceSets.main.resources.srcDirs) {
@@ -119,8 +148,8 @@ allprojects {
     processTestResources {
         def vars = rootProject.config.toMap()
 
-        allprojects.each {
-            vars[it.name]['version'] = it.version
+        allprojects.each { project ->
+            vars[project.name]['version'] = project.version
         }
 
         inputs.properties vars
