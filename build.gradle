@@ -191,7 +191,7 @@ minecraft {
             parent runs.client
 
             project.subprojects.forEach { subProject ->
-                child subProject.path, 'server'
+                child subProject.path, 'client'
             }
         }
 
@@ -205,7 +205,7 @@ minecraft {
 
         testClientAllMods {
             parent runs.testClient
-            parent runs.clientAllMods
+            child runs.clientAllMods
         }
 
         server {
@@ -233,7 +233,7 @@ minecraft {
 
         testServerAllMods {
             parent runs.testServer
-            parent runs.serverAllMods
+            child runs.serverAllMods
         }
     }
 }

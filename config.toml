@@ -7,6 +7,15 @@
         displayName = 'Example Mod Library'
         description = 'An example library for example mods'
 
+[ExampleModLibTest]
+    id = 'examplemodlibtest'
+    name = 'ExampleModLibTest'
+    group = 'example.examplemodlib.test'
+
+    [ExampleModLibTest.meta]
+        displayName = 'Example Mod Library Test'
+        description = 'A test mod for the Example Mod Library'
+
 [ExampleMod1]
     id = 'examplemod1'
     name = 'ExampleMod1'
