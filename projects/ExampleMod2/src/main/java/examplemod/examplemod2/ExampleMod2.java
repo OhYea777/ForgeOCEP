@@ -1,6 +1,7 @@
-package examplemod.examplemodlib;
+package examplemod.examplemod2;
 
-import examplemod.examplemodlib.api.ExampleModLibAPI;
+import examplemod.examplemod2.api.ExampleMod2API;
+import examplemod.examplemodlib.ExampleModLib;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,18 +15,16 @@ import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nonnull;
-
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("examplemodlib")
-public class ExampleModLib {
+@Mod("examplemod2")
+public class ExampleMod2 {
 
-    private static ExampleModLib INSTANCE;
+    private static ExampleMod2 INSTANCE;
 
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public ExampleModLib() {
+    public ExampleMod2() {
         INSTANCE = this;
 
         // Register the preInit method for modloading
@@ -48,7 +47,10 @@ public class ExampleModLib {
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 
         // Init api
-        ExampleModLibAPI.init();
+        ExampleMod2API.init();
+
+        // Run library method
+        ExampleModLib.getInstance().someLibraryMethod(FMLModLoadingContext.get().getActiveContainer().getModId());
     }
 
     @SubscribeEvent
@@ -63,13 +65,9 @@ public class ExampleModLib {
         LOGGER.info("HELLO from server starting");
     }
 
-    public void someLibraryMethod(@Nonnull String mod) {
-        LOGGER.info("someLibraryMethod: " + mod);
-    }
-
-    public static ExampleModLib getInstance() {
+    public static ExampleMod2 getInstance() {
         if (INSTANCE == null) {
-            throw new RuntimeException("[ExampleModLib] Not yet initialised");
+            throw new RuntimeException("[ExampleMod2] Not yet initialised");
         }
 
         return INSTANCE;

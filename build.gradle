@@ -133,7 +133,7 @@ allprojects {
         }
 
         inputs.properties vars
-        
+
         from(sourceSets.main.resources.srcDirs) {
             include 'META-INF/mods.toml'
             include 'pack.mcmeta'
@@ -155,7 +155,7 @@ allprojects {
         }
 
         inputs.properties vars
-        
+
         from(sourceSets.test.resources.srcDirs) {
             include 'META-INF/mods.toml'
             include 'pack.mcmeta'
@@ -181,35 +181,59 @@ sourceSets {
 minecraft {
     runs {
         client {
-            ideaModule "${group}.${name}.main"
-            workingDirectory project.file('run').canonicalPath
+            ideaModule "${project.group}.${project.name}.main"
 
             source sourceSets.api
             source sourceSets.main
+        }
+
+        clientAllMods {
+            parent runs.client
+
+            project.subprojects.forEach { subProject ->
+                child subProject.path, 'server'
+            }
         }
 
         testClient {
-            ideaModule "${group}.${name}.test"
+            ideaModule "${project.group}.${project.name}.test"
 
             source sourceSets.test
 
-            parent client
+            parent runs.client
+        }
+
+        testClientAllMods {
+            parent runs.testClient
+            parent runs.clientAllMods
         }
 
         server {
-            ideaModule "${group}.${name}.main"
-            workingDirectory project.file('run').canonicalPath
+            ideaModule "${project.group}.${project.name}.main"
 
             source sourceSets.api
             source sourceSets.main
         }
 
+        serverAllMods {
+            parent runs.server
+
+            project.subprojects.forEach { subProject ->
+                child subProject.path, 'server'
+            }
+        }
+
         testServer {
-            ideaModule "${group}.${name}.test"
+            ideaModule "${project.group}.${project.name}.test"
 
             source sourceSets.test
 
-            parent server
+            parent runs.server
+        }
+
+        testServerAllMods {
+            parent runs.testServer
+            parent runs.serverAllMods
         }
     }
 }
@@ -218,7 +242,7 @@ subprojects {
     minecraft {
         runs {
             client {
-                ideaModule "${group}.${name}.main"
+                ideaModule "${project.group}.${project.name}.main"
                 workingDirectory project.file('run').canonicalPath
 
                 source sourceSets.api
@@ -228,15 +252,15 @@ subprojects {
             }
 
             testClient {
-                ideaModule "${group}.${name}.test"
+                ideaModule "${project.group}.${project.name}.test"
 
                 source sourceSets.test
 
-                parent client
+                parent runs.client
             }
 
             server {
-                ideaModule "${group}.${name}.main"
+                ideaModule "${project.group}.${project.name}.main"
                 workingDirectory project.file('run').canonicalPath
 
                 source sourceSets.api
@@ -246,23 +270,16 @@ subprojects {
             }
 
             testServer {
-                ideaModule "${group}.${name}.test"
+                ideaModule "${project.group}.${project.name}.test"
 
                 source sourceSets.test
 
-                parent server
+                parent runs.server
             }
         }
     }
-}
 
-// Stop execution of subproject run tasks when executing root project run task
-gradle.taskGraph.whenReady { graph ->
-    graph.getAllTasks().each { task ->
-        if (task.path =~ /:.+:run+/) {
-            if (graph.hasTask(':' + task.name)) {
-                task.enabled = false
-            }
-        }
+    dependencies {
+        compile rootProject
     }
 }

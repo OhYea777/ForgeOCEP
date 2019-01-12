@@ -1,6 +1,7 @@
 package examplemod.examplemod1;
 
 import examplemod.examplemod1.api.ExampleMod1API;
+import examplemod.examplemodlib.ExampleModLib;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -47,6 +48,9 @@ public class ExampleMod1 {
 
         // Init api
         ExampleMod1API.init();
+
+        // Run library method
+        ExampleModLib.getInstance().someLibraryMethod(FMLModLoadingContext.get().getActiveContainer().getModId());
     }
 
     @SubscribeEvent
