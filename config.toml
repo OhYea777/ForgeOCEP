@@ -45,7 +45,7 @@
     [minecraft.forge]
         name = 'forge'
         group = 'net.minecraftforge.test'
-        version = '1.13-24.0.64-userdev-check-path-exists'
+        version = '1.13-24.0.76-userdev-check-path-exists'
         range = '[24,)'
 
     [minecraft.modLoader]

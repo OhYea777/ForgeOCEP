@@ -27,6 +27,7 @@ buildscript {
 import com.moandjiezana.toml.Toml
 
 plugins {
+    id 'net.minecrell.licenser' version '0.4.1'
     id 'org.ajoberstar.grgit' version '2.3.0'
 }
 
@@ -121,6 +122,24 @@ allprojects {
         apiCompile.extendsFrom compile
         testCompile.extendsFrom apiCompile
     }
+
+    license {
+        header = rootProject.file('HEADER')
+
+        ext {
+            name = 'ForgeOCEP'
+            year = 2018
+            fullname = 'Forge Overly Complicated Example Project'
+        }
+
+        tasks {
+            "${project.name}" {
+                sourceSets = project.sourceSets.collect { it }
+
+                include '**/*.java'
+            }
+        }
+    }
 }
 
 // Process all resources _AFTER_ processing original projects so versions are set
@@ -182,6 +201,7 @@ minecraft {
     runs {
         client {
             ideaModule "${project.group}.${project.name}.main"
+            workingDirectory project.file('run').canonicalPath
 
             source sourceSets.api
             source sourceSets.main
@@ -210,6 +230,7 @@ minecraft {
 
         server {
             ideaModule "${project.group}.${project.name}.main"
+            workingDirectory project.file('run').canonicalPath
 
             source sourceSets.api
             source sourceSets.main
