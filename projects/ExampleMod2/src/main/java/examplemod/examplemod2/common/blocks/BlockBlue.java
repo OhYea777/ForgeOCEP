@@ -18,19 +18,20 @@
  * USA
  */
 
-package examplemod.examplemod2.api;
+package examplemod.examplemod2.common.blocks;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import examplemod.examplemod2.ExampleMod2;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 
-public class ExampleMod2API {
+public class BlockBlue extends Block {
 
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final BlockBlue BLOCK_BLUE = new BlockBlue(Builder.create(Material.IRON));
 
-    public static void init() {
-        // Some example code
-        LOGGER.info("HELLO FROM API INIT");
+    public BlockBlue(Builder properties) {
+        super(properties);
+
+        setRegistryName(ExampleMod2.MOD_ID, "block_blue");
     }
 
 }

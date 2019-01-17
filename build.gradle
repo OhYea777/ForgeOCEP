@@ -122,24 +122,6 @@ allprojects {
         apiCompile.extendsFrom compile
         testCompile.extendsFrom apiCompile
     }
-
-    license {
-        header = rootProject.file('HEADER')
-
-        ext {
-            name = 'ForgeOCEP'
-            year = 2018
-            fullname = 'Forge Overly Complicated Example Project'
-        }
-
-        tasks {
-            "${project.name}" {
-                sourceSets = project.sourceSets.collect { it }
-
-                include '**/*.java'
-            }
-        }
-    }
 }
 
 // Process all resources _AFTER_ processing original projects so versions are set
@@ -302,5 +284,26 @@ subprojects {
 
     dependencies {
         compile rootProject
+        compile rootProject.sourceSets.api.output
+    }
+}
+
+license {
+    header = rootProject.file('HEADER')
+
+    ext {
+        name = 'ForgeOCEP'
+        year = Calendar.getInstance().get(Calendar.YEAR)
+        fullname = 'Forge Overly Complicated Example Project'
+    }
+
+    include '**/*.java'
+
+    tasks {
+        subProjects {
+            files = project.files(project.subprojects*.sourceSets*.collect { sourceSet ->
+                sourceSet.allJava
+            }.flatten())
+        }
     }
 }

@@ -18,19 +18,10 @@
  * USA
  */
 
-package examplemod.examplemod2.api;
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+package examplemod.examplemod1;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import mcp.MethodsReturnNonnullByDefault;
 
-public class ExampleMod2API {
-
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    public static void init() {
-        // Some example code
-        LOGGER.info("HELLO FROM API INIT");
-    }
-
-}
+import javax.annotation.ParametersAreNonnullByDefault;

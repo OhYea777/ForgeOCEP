@@ -20,7 +20,7 @@
 
 /**
  * ForgeOCEP
- * Copyright (C) 2019 Forge Overly Complicated Example Project
+ * Copyright (C) 2018 Forge Overly Complicated Example Project
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,19 +37,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package examplemod.examplemodlib.api;
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+package examplemod.examplemodlib;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import mcp.MethodsReturnNonnullByDefault;
 
-public class ExampleModLibAPI {
-
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    public static void init() {
-        // Some example code
-        LOGGER.info("HELLO FROM API INIT");
-    }
-
-}
+import javax.annotation.ParametersAreNonnullByDefault;

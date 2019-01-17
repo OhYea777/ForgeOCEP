@@ -37,19 +37,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 package examplemod.examplemodlib.api;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import mcp.MethodsReturnNonnullByDefault;
 
-public class ExampleModLibAPI {
-
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    public static void init() {
-        // Some example code
-        LOGGER.info("HELLO FROM API INIT");
-    }
-
-}
+import javax.annotation.ParametersAreNonnullByDefault;
