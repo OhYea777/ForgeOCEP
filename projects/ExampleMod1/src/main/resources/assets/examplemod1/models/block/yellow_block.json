@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "examplemod2:blocks/block_blue"
+    "all": "examplemod1:block/yellow_block"
   }
 }

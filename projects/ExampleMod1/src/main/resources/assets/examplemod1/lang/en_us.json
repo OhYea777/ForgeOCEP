@@ -1,5 +1,8 @@
 {
-    "block.examplemod1.block_yellow": "Yellow Block",
+  "block.examplemod1.yellow_block": "Yellow Block",
 
-    "itemGroup.examplemod1": "Example Mod 1"
+  "item.examplemod1.yellow_ingot": "Yellow Ingot",
+  "item.examplemod1.yellow_nugget": "Yellow Nugget",
+
+  "itemGroup.examplemod1": "Example Mod 1"
 }

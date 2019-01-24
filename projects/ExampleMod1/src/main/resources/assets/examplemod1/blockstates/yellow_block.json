@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "examplemod1:block/yellow_block"
+    }
+  }
+}

@@ -122,6 +122,50 @@ allprojects {
         apiCompile.extendsFrom compile
         testCompile.extendsFrom apiCompile
     }
+
+    configurations.all {
+        resolutionStrategy {
+            eachDependency { DependencyResolveDetails details ->
+                if (details.requested.group == 'net.minecraftforge' && details.requested.name == 'eventbus') {
+
+
+                    details.useTarget group: 'net.minecraftforge', name: 'eventbus', version: '0.6.+'
+                }
+            }
+        }
+    }
+
+    task devJar(type: Jar) {
+        from sourceSets.api.output
+        from sourceSets.main.output
+
+        classifier = 'dev'
+    }
+
+    task apiJar(type: Jar) {
+        from sourceSets.api.output
+        from sourceSets.api.java
+
+        from processApiResources.outputs
+
+        classifier = 'api'
+    }
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.api.java
+        from sourceSets.main.java
+
+        from processApiResources.outputs
+        from processResources.outputs
+
+        classifier = 'sources'
+    }
+
+    artifacts {
+        archives devJar
+        archives apiJar
+        archives sourcesJar
+    }
 }
 
 // Process all resources _AFTER_ processing original projects so versions are set

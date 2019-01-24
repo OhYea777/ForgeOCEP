@@ -26,12 +26,13 @@ import net.minecraft.block.material.Material;
 
 public class BlockBlue extends Block {
 
+    public static final String NAME = "blue_block";
     public static final BlockBlue BLOCK_BLUE = new BlockBlue(Builder.create(Material.IRON));
 
     public BlockBlue(Builder properties) {
         super(properties);
 
-        setRegistryName(ExampleMod2.MOD_ID, "block_blue");
+        setRegistryName(ExampleMod2.MOD_ID, NAME);
     }
 
 }

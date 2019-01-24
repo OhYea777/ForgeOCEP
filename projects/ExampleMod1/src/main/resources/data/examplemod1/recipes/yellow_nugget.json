@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "examplemod1:yellow_ingot"
+    }
+  ],
+  "result": {
+    "item": "examplemod1:yellow_nugget",
+    "count": 9
+  }
+}

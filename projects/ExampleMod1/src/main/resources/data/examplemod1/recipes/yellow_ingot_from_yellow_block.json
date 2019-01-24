@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "iron_ingot",
+  "ingredients": [
+    {
+      "item": "examplemod1:yellow_block"
+    }
+  ],
+  "result": {
+    "item": "examplemod1:yellow_ingot",
+    "count": 9
+  }
+}

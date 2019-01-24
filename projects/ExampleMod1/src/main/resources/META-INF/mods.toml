@@ -9,6 +9,13 @@ loaderVersion = '${minecraft.modLoader.range}'
     description = '${ExampleMod1.meta.description}'
 
 [[dependencies.${ExampleMod1.id}]]
+    modId = '${ExampleMod2.id}'
+    mandatory = false
+    versionRange = '[${ExampleMod2.version}]'
+    ordering = 'BEFORE'
+    side = 'BOTH'
+
+[[dependencies.${ExampleMod1.id}]]
     modId = '${ExampleModLib.id}'
     mandatory = true
     versionRange = '[${ExampleModLib.version}]'

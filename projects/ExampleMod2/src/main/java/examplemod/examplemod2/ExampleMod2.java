@@ -58,6 +58,8 @@ public class ExampleMod2 {
 
     public ExampleMod2() {
         FMLModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
+        FMLModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -73,18 +75,22 @@ public class ExampleMod2 {
         ExampleModLib.someLibraryMethod(FMLModLoadingContext.get().getActiveContainer().getModId());
     }
 
-    @SubscribeEvent
-    public final void registerBlocks(final RegistryEvent.Register<Block> event) {
+    private void registerBlocks(final RegistryEvent.Register<Block> event) {
         // Register blocks
+        getLogger().info("HELLO FROM REGISTER BLOCKS");
+
         event.getRegistry().register(BlockBlue.BLOCK_BLUE);
     }
 
-    @SubscribeEvent
-    public final void registerItems(final RegistryEvent.Register<Item> event) {
+    private void registerItems(final RegistryEvent.Register<Item> event) {
+        // Register items
         Item.Builder itemBuilder = new Item.Builder().group(getItemGroup());
 
-        // Register items
-        event.getRegistry().register(new ItemBlock(BlockBlue.BLOCK_BLUE, itemBuilder).setRegistryName(MOD_ID, "block_blue"));
+        getLogger().info("HELLO FROM REGISTER ITEMS");
+
+        event.getRegistry().register(new ItemBlock(BlockBlue.BLOCK_BLUE, itemBuilder).setRegistryName(MOD_ID, BlockBlue.NAME));
+        event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "blue_ingot"));
+        event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "blue_nugget"));
     }
 
     @SubscribeEvent

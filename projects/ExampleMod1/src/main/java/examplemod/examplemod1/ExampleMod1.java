@@ -33,6 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModThreadContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
@@ -58,6 +59,8 @@ public class ExampleMod1 {
 
     public ExampleMod1() {
         FMLModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
+        FMLModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -73,18 +76,22 @@ public class ExampleMod1 {
         ExampleModLib.someLibraryMethod(FMLModLoadingContext.get().getActiveContainer().getModId());
     }
 
-    @SubscribeEvent
-    public final void registerBlocks(final RegistryEvent.Register<Block> event) {
+    private void registerBlocks(final RegistryEvent.Register<Block> event) {
         // Register blocks
+        getLogger().info("HELLO FROM REGISTER BLOCKS");
+
         event.getRegistry().register(BlockYellow.BLOCK_YELLOW);
     }
 
-    @SubscribeEvent
-    public final void registerItems(final RegistryEvent.Register<Item> event) {
+    private void registerItems(final RegistryEvent.Register<Item> event) {
+        // Register items
+        getLogger().info("HELLO FROM REGISTER ITEMS");
+
         Item.Builder itemBuilder = new Item.Builder().group(getItemGroup());
 
-        // Register items
-        event.getRegistry().register(new ItemBlock(BlockYellow.BLOCK_YELLOW, itemBuilder).setRegistryName(MOD_ID, "block_yellow"));
+        event.getRegistry().register(new ItemBlock(BlockYellow.BLOCK_YELLOW, itemBuilder).setRegistryName(MOD_ID, BlockYellow.NAME));
+        event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "yellow_ingot"));
+        event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "yellow_nugget"));
     }
 
     @SubscribeEvent

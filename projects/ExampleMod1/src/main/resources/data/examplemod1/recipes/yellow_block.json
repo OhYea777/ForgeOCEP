@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "examplemod1:yellow_ingot"
+    }
+  },
+  "result": {
+    "item": "examplemod1:yellow_block"
+  }
+}

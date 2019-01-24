@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "examplemod1:item/yellow_nugget"
+  }
+}
