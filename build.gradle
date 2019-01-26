@@ -123,7 +123,7 @@ allprojects {
         testCompile.extendsFrom apiCompile
     }
 
-    configurations.all {
+    /* configurations.all {
         resolutionStrategy {
             eachDependency { DependencyResolveDetails details ->
                 if (details.requested.group == 'net.minecraftforge' && details.requested.name == 'eventbus') {
@@ -133,7 +133,7 @@ allprojects {
                 }
             }
         }
-    }
+    } */
 
     task devJar(type: Jar) {
         from sourceSets.api.output
@@ -229,8 +229,11 @@ minecraft {
             ideaModule "${project.group}.${project.name}.main"
             workingDirectory project.file('run').canonicalPath
 
-            source sourceSets.api
-            source sourceSets.main
+            mods {
+                ExampleModLib {
+                    sources sourceSets.api, sourceSets.main
+                }
+            }
         }
 
         clientAllMods {
@@ -242,15 +245,20 @@ minecraft {
         }
 
         testClient {
+            parent runs.client
+
             ideaModule "${project.group}.${project.name}.test"
 
-            source sourceSets.test
-
-            parent runs.client
+            mods {
+                ExampleModLibTest {
+                    sources sourceSets.test
+                }
+            }
         }
 
         testClientAllMods {
             parent runs.testClient
+
             child runs.clientAllMods
         }
 
@@ -258,8 +266,13 @@ minecraft {
             ideaModule "${project.group}.${project.name}.main"
             workingDirectory project.file('run').canonicalPath
 
-            source sourceSets.api
-            source sourceSets.main
+            arg 'nogui'
+
+            mods {
+                ExampleModLib {
+                    sources sourceSets.api, sourceSets.main
+                }
+            }
         }
 
         serverAllMods {
@@ -271,15 +284,20 @@ minecraft {
         }
 
         testServer {
+            parent runs.server
+
             ideaModule "${project.group}.${project.name}.test"
 
-            source sourceSets.test
-
-            parent runs.server
+            mods {
+                ExampleModLibTest {
+                    sources sourceSets.test
+                }
+            }
         }
 
         testServerAllMods {
             parent runs.testServer
+
             child runs.serverAllMods
         }
     }
@@ -289,39 +307,55 @@ subprojects {
     minecraft {
         runs {
             client {
+                parent rootProject.path, 'client'
+
                 ideaModule "${project.group}.${project.name}.main"
+
                 workingDirectory project.file('run').canonicalPath
 
-                source sourceSets.api
-                source sourceSets.main
-
-                parent rootProject.minecraft.runs.client
+                mods {
+                    "${project.name}" {
+                        sources sourceSets.api, sourceSets.main
+                    }
+                }
             }
 
             testClient {
+                parent runs.client
+
                 ideaModule "${project.group}.${project.name}.test"
 
-                source sourceSets.test
-
-                parent runs.client
+                mods {
+                    "${project.name}Test" {
+                        sources sourceSets.test
+                    }
+                }
             }
 
             server {
+                parent rootProject.path, 'server'
+
                 ideaModule "${project.group}.${project.name}.main"
+
                 workingDirectory project.file('run').canonicalPath
 
-                source sourceSets.api
-                source sourceSets.main
-
-                parent rootProject.minecraft.runs.server
+                mods {
+                    "${project.name}" {
+                        sources sourceSets.api, sourceSets.main
+                    }
+                }
             }
 
             testServer {
+                parent runs.server
+
                 ideaModule "${project.group}.${project.name}.test"
 
-                source sourceSets.test
-
-                parent runs.server
+                mods {
+                    "${project.name}Test" {
+                        sources sourceSets.test
+                    }
+                }
             }
         }
     }

@@ -19,7 +19,7 @@ loaderVersion = '${minecraft.modLoader.range}'
     modId = '${ExampleModLib.id}'
     mandatory = true
     versionRange = '[${ExampleModLib.version}]'
-    ordering = 'NONE'
+    ordering = 'AFTER'
     side = 'BOTH'
 
 [[dependencies.${ExampleMod1.id}]]
