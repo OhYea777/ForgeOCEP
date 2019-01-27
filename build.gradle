@@ -231,7 +231,7 @@ minecraft {
 
             mods {
                 ExampleModLib {
-                    sources sourceSets.api, sourceSets.main
+                    sources sourceSets.main, sourceSets.api
                 }
             }
         }
@@ -270,7 +270,7 @@ minecraft {
 
             mods {
                 ExampleModLib {
-                    sources sourceSets.api, sourceSets.main
+                    sources sourceSets.main, sourceSets.api
                 }
             }
         }
@@ -315,7 +315,7 @@ subprojects {
 
                 mods {
                     "${project.name}" {
-                        sources sourceSets.api, sourceSets.main
+                        sources sourceSets.main, sourceSets.api
                     }
                 }
             }
@@ -341,7 +341,7 @@ subprojects {
 
                 mods {
                     "${project.name}" {
-                        sources sourceSets.api, sourceSets.main
+                        sources sourceSets.main, sourceSets.api
                     }
                 }
             }
