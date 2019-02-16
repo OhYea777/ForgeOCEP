@@ -27,9 +27,9 @@ import net.minecraft.block.material.Material;
 public class BlockYellow extends Block {
 
     public static final String NAME = "yellow_block";
-    public static final BlockYellow BLOCK_YELLOW = new BlockYellow(Builder.create(Material.IRON));
+    public static final BlockYellow BLOCK_YELLOW = new BlockYellow(Properties.create(Material.IRON));
 
-    public BlockYellow(Builder properties) {
+    public BlockYellow(Properties properties) {
         super(properties);
 
         setRegistryName(ExampleMod1.MOD_ID, NAME);

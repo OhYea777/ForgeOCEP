@@ -44,10 +44,11 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,9 +61,9 @@ public class ExampleModLibTest {
 
     public ExampleModLibTest() {
         // Register the setup method for modloading
-        FMLModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
-        FMLModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
 
         // Register ourselves for server, registry and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -73,7 +74,7 @@ public class ExampleModLibTest {
         getLogger().info("HELLO FROM SETUP");
 
         // Run library method
-        ExampleModLib.someLibraryMethod(FMLModLoadingContext.get().getActiveContainer().getModId());
+        ExampleModLib.someLibraryMethod(ModLoadingContext.get().getActiveContainer().getModId());
     }
 
     private void registerBlocks(final RegistryEvent.Register<Block> event) {

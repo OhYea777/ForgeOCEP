@@ -33,11 +33,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModThreadContext;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,9 +58,9 @@ public class ExampleMod1 {
     };
 
     public ExampleMod1() {
-        FMLModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
-        FMLModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -73,7 +73,7 @@ public class ExampleMod1 {
         ExampleMod1API.init();
 
         // Run library method
-        ExampleModLib.someLibraryMethod(FMLModLoadingContext.get().getActiveContainer().getModId());
+        ExampleModLib.someLibraryMethod(ModLoadingContext.get().getActiveContainer().getModId());
     }
 
     private void registerBlocks(final RegistryEvent.Register<Block> event) {
@@ -87,7 +87,7 @@ public class ExampleMod1 {
         // Register items
         getLogger().info("HELLO FROM REGISTER ITEMS");
 
-        Item.Builder itemBuilder = new Item.Builder().group(getItemGroup());
+        Item.Properties itemBuilder = new Item.Properties().group(getItemGroup());
 
         event.getRegistry().register(new ItemBlock(BlockYellow.BLOCK_YELLOW, itemBuilder).setRegistryName(MOD_ID, BlockYellow.NAME));
         event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "yellow_ingot"));

@@ -35,8 +35,8 @@
         description = 'The second example mod'
 
 [minecraft]
-    version = '1.13'
-    range = '[1.13]'
+    version = '1.13.2'
+    range = '[1.13.2]'
 
     [minecraft.mappings]
         channel = 'snapshot'
@@ -44,10 +44,10 @@
 
     [minecraft.forge]
         name = 'forge'
-        group = 'net.minecraftforge.test'
-        version = '1.13-24.0.128-userdev-check-path-exists'
-        range = '[24,)'
+        group = 'net.minecraftforge'
+        version = '1.13.2-25.0.14-1.13.x-runconfig-refactor'
+        range = '[25,)'
 
     [minecraft.modLoader]
         loader = 'javafml'
-        range = '[24,)'
+        range = '[25,)'

@@ -47,7 +47,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,9 +61,9 @@ public class ExampleModLib {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public ExampleModLib() {
-        FMLModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
-        FMLModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
