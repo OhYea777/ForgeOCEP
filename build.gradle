@@ -77,27 +77,13 @@ allprojects {
             url = 'https://files.minecraftforge.net/maven'
         }
 
+        maven {
+            name = 'progwml6'
+            url = 'http://dvs1.progwml6.com/files/maven'
+        }
+
         jcenter()
         mavenCentral()
-    }
-
-    dependencies {
-        minecraft group: config.getString('minecraft.forge.group'), name: config.getString('minecraft.forge.name'), version: config.getString('minecraft.forge.version')
-
-        testImplementation gradleTestKit()
-        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.1.+'
-
-        testCompileOnly group: 'junit', name: 'junit', version: '4.12'
-        testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.1.+'
-        testRuntimeOnly group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.1.+'
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-
-    minecraft {
-        mappings channel: config.getString('minecraft.mappings.channel'), version: config.getString('minecraft.mappings.version')
     }
 
     sourceSets {
@@ -119,8 +105,43 @@ allprojects {
     }
 
     configurations {
-        apiCompile.extendsFrom compile
-        testCompile.extendsFrom apiCompile
+        apiImplementation.extendsFrom implementation
+        testImplementation.extendsFrom apiImplementation
+
+        /* mod {
+
+        } */
+    }
+
+    dependencies {
+        minecraft group: config.getString('minecraft.forge.group'), name: config.getString('minecraft.forge.name'), version: config.getString('minecraft.forge.version')
+
+        // mod group: 'com.progwml6.ironchest', name: 'ironchest', version: '1.13.2-8.0.+'
+
+        testImplementation gradleTestKit()
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.1.+'
+
+        testCompileOnly group: 'junit', name: 'junit', version: '4.12'
+        testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.1.+'
+        testRuntimeOnly group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.1.+'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    minecraft {
+        mappings channel: config.getString('minecraft.mappings.channel'), version: config.getString('minecraft.mappings.version')
+
+        runs {
+            client {
+                // println configurations.mod.files.collect { mod -> mod.getParent() }.join(',')
+            }
+
+            server {
+                // println configurations.mod.files.collect { mod -> mod.getParent() }.join(',')
+            }
+        }
     }
 
     /* configurations.all {
@@ -226,8 +247,11 @@ sourceSets {
 minecraft {
     runs {
         client {
-            ideaModule "${project.group}.${project.name}.main"
-            workingDirectory project.file('run').canonicalPath
+            ideaModule "${project.name}.main"
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,LOADING'
+            property 'forge.logging.console.level', 'debug'
 
             mods {
                 ExampleModLib {
@@ -247,7 +271,7 @@ minecraft {
         testClient {
             parent runs.client
 
-            ideaModule "${project.group}.${project.name}.test"
+            ideaModule "${project.name}.test"
 
             mods {
                 ExampleModLibTest {
@@ -263,8 +287,11 @@ minecraft {
         }
 
         server {
-            ideaModule "${project.group}.${project.name}.main"
-            workingDirectory project.file('run').canonicalPath
+            ideaModule "${project.name}.main"
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,LOADING'
+            property 'forge.logging.console.level', 'debug'
 
             arg 'nogui'
 
@@ -286,7 +313,7 @@ minecraft {
         testServer {
             parent runs.server
 
-            ideaModule "${project.group}.${project.name}.test"
+            ideaModule "${project.name}.test"
 
             mods {
                 ExampleModLibTest {
@@ -309,9 +336,9 @@ subprojects {
             client {
                 parent rootProject.path, 'client'
 
-                ideaModule "${project.group}.${project.name}.main"
+                ideaModule "${rootProject.name}.${project.name}.main"
 
-                workingDirectory project.file('run').canonicalPath
+                workingDirectory project.file('run')
 
                 mods {
                     "${project.name}" {
@@ -323,7 +350,7 @@ subprojects {
             testClient {
                 parent runs.client
 
-                ideaModule "${project.group}.${project.name}.test"
+                ideaModule "${rootProject.name}.${project.name}.test"
 
                 mods {
                     "${project.name}Test" {
@@ -335,9 +362,9 @@ subprojects {
             server {
                 parent rootProject.path, 'server'
 
-                ideaModule "${project.group}.${project.name}.main"
+                ideaModule "${rootProject.name}.${project.name}.main"
 
-                workingDirectory project.file('run').canonicalPath
+                workingDirectory project.file('run')
 
                 mods {
                     "${project.name}" {
@@ -349,7 +376,7 @@ subprojects {
             testServer {
                 parent runs.server
 
-                ideaModule "${project.group}.${project.name}.test"
+                ideaModule "${rootProject.name}.${project.name}.test"
 
                 mods {
                     "${project.name}Test" {
@@ -361,8 +388,7 @@ subprojects {
     }
 
     dependencies {
-        compile rootProject
-        compile rootProject.sourceSets.api.output
+        compileOnly rootProject
     }
 }
 
@@ -383,5 +409,11 @@ license {
                 sourceSet.allJava
             }.flatten())
         }
+    }
+}
+
+gradle.taskGraph.beforeTask { Task task ->
+    if (task.name == 'runClientAllMods' && task instanceof JavaExec) {
+        println task.classpath.files
     }
 }

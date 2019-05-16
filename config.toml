@@ -45,7 +45,7 @@
     [minecraft.forge]
         name = 'forge'
         group = 'net.minecraftforge'
-        version = '1.13.2-25.0.14-1.13.x-runconfig-refactor'
+        version = '1.13.2-25.0.209'
         range = '[25,)'
 
     [minecraft.modLoader]
