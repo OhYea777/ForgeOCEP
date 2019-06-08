@@ -24,8 +24,8 @@ import examplemod.examplemod1.api.ExampleMod1API;
 import examplemod.examplemod1.common.blocks.BlockYellow;
 import examplemod.examplemodlib.ExampleModLib;
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -89,7 +89,7 @@ public class ExampleMod1 {
 
         Item.Properties itemBuilder = new Item.Properties().group(getItemGroup());
 
-        event.getRegistry().register(new ItemBlock(BlockYellow.BLOCK_YELLOW, itemBuilder).setRegistryName(MOD_ID, BlockYellow.NAME));
+        event.getRegistry().register(new BlockItem(BlockYellow.BLOCK_YELLOW, itemBuilder).setRegistryName(MOD_ID, BlockYellow.NAME));
         event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "yellow_ingot"));
         event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "yellow_nugget"));
     }

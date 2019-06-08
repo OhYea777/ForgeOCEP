@@ -24,8 +24,8 @@ import examplemod.examplemod2.api.ExampleMod2API;
 import examplemod.examplemod2.common.blocks.BlockBlue;
 import examplemod.examplemodlib.ExampleModLib;
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -89,7 +89,7 @@ public class ExampleMod2 {
 
         getLogger().info("HELLO FROM REGISTER ITEMS");
 
-        event.getRegistry().register(new ItemBlock(BlockBlue.BLOCK_BLUE, itemBuilder).setRegistryName(MOD_ID, BlockBlue.NAME));
+        event.getRegistry().register(new BlockItem(BlockBlue.BLOCK_BLUE, itemBuilder).setRegistryName(MOD_ID, BlockBlue.NAME));
         event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "blue_ingot"));
         event.getRegistry().register(new Item(itemBuilder).setRegistryName(MOD_ID, "blue_nugget"));
     }
