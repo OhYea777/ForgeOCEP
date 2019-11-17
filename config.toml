@@ -35,19 +35,19 @@
         description = 'The second example mod'
 
 [minecraft]
-    version = '1.14.2'
-    range = '[1.14.2]'
+    version = '1.14.4'
+    range = '[1.14,)'
 
     [minecraft.mappings]
         channel = 'snapshot'
-        version = '20190526-1.13.2'
+        version = '20190719-1.14.3'
 
     [minecraft.forge]
         name = 'forge'
         group = 'net.minecraftforge'
-        version = '1.14.2-26.0.3'
-        range = '[26,)'
+        version = '1.14.4-28.1.90'
+        range = '[28,)'
 
     [minecraft.modLoader]
         loader = 'javafml'
-        range = '[26,)'
+        range = '[28,)'
